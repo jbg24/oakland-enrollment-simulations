@@ -2,7 +2,8 @@ import './styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
-import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
+import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = 'pk.eyJ1IjoidHlsZXJtYWNoYWRvIiwiYSI6ImNpbXY1YmMxMTAybTh1cGtrYmY3bjFiNHMifQ.e7Jn45kHrT5m2SbpSCZq5Q';
 
@@ -35,21 +36,22 @@ class Map extends React.PureComponent {
   }
   render() {
     const { lng, lat, zoom } = this.state;
-      return (
-        <div className="grid-container">
-          <section className="header">
+    return (
+      <div className="grid-container">
+        <section className="header">
+        </section> 
+        <section className="control">
 
-          </section>
-          <section className="control">
-
-          </section>
-          <section className="info">
-            Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-          </section>
-          <section className="map" ref={this.mapContainer}  />
-        </div>
-      );
+        </section>
+        <section className="info">
+        </section> 
+        <section className="map">
+          <div ref={this.mapContainer} className="map-container" />
+        </section>;
+        
+      </div>
+    );
   }
-};
+}
 
-ReactDOM.render(<Map />, document.getElementById('root'));
+ReactDOM.render(<Map />, document.getElementById('app'));
