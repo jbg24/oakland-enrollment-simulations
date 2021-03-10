@@ -1,6 +1,7 @@
 import './styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import InfoCard from "./components/infoCard.jsx"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
@@ -11,9 +12,9 @@ class Map extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      lng: -70.9,
-      lat: 42.35,
-      zoom: 9
+      lng: -122.26,
+      lat: 37.79,
+      zoom: 12
     };
     this.mapContainer = React.createRef();
   }
@@ -44,6 +45,9 @@ class Map extends React.PureComponent {
 
         </section>
         <section className="info">
+          <InfoCard schoolname={"School 1"}/>
+          <InfoCard schoolname={"School 2"}/>
+          <InfoCard schoolname={"School 3"}/>
         </section> 
         <section className="map">
           <div ref={this.mapContainer} className="map-container" />

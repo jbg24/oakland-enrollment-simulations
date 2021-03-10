@@ -1,15 +1,31 @@
 $md-screen: 426px;
 $lg-screen: 769px;
 
+* {
+  font-family: "Helvetica Neue",Arial, Helvetica, sans-serif
+}
+
 .grid-container  {
-  height:100vh;
   display: grid;
-  grid-template-columns: 300px 1fr;
-  grid-template-rows: 100px 1fr;
-  gap: 0px 0px;
+  height:100vh;
+  grid-template-rows: 100px 100px 300px 1fr;
   grid-template-areas:
-    "header control"
-    "info map";
+      "header"
+      "control"
+      "map"
+      "info"
+      ;
+
+  @media screen and (min-width: $lg-screen) {
+    height:100vh;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 100px 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "header control"
+      "info map";
+  }
+  
 }
 .header { 
   grid-area: header; 

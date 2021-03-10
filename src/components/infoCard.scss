@@ -1,0 +1,11 @@
+.infocard {
+    background-color: #f5f2ed;
+    width:100%;
+    padding:10px;
+    margin:0 0 2rem;
+
+    .statsboard {
+        display: flex;
+        justify-content: space-around;
+    }
+}
