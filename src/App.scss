@@ -1,0 +1,31 @@
+$md-screen: 426px;
+$lg-screen: 769px;
+
+.App  {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 100px 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "header control"
+    "info map";
+}
+.header { 
+  grid-area: header; 
+  background-color: lightblue;
+}
+
+.control { 
+  grid-area: control; 
+  background-color: lightcoral;
+}
+
+.info { 
+  grid-area: info; 
+  background-color: white;
+}
+
+.map { 
+  grid-area: map; 
+  background-color: olivedrab;
+}
