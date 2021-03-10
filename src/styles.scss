@@ -1,7 +1,8 @@
 $md-screen: 426px;
 $lg-screen: 769px;
 
-.App  {
+.grid-container  {
+  height:100vh;
   display: grid;
   grid-template-columns: 300px 1fr;
   grid-template-rows: 100px 1fr;
@@ -27,5 +28,9 @@ $lg-screen: 769px;
 
 .map { 
   grid-area: map; 
-  background-color: olivedrab;
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+  // left: 0;
+  // bottom: 0;
 }
