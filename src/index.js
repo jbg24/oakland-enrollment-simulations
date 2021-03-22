@@ -16,9 +16,17 @@ class Map extends React.PureComponent {
       lng: -122.26,
       lat: 37.79,
       zoom: 12,
-      vision: false,
+      vision: "Today",
     };
+    this.changeVision = this.changeVision.bind(this);
     this.mapContainer = React.createRef();
+  }
+  changeVision() {
+    if (this.state.vision === "Today") {
+      this.setState({ vision: "Zone" })
+    } else {
+      this.setState({ vision: "Today" })
+    }
   }
   componentDidMount() {
     console.log(data);
@@ -46,17 +54,19 @@ class Map extends React.PureComponent {
           <h1>ACROSS LINES</h1>
         </section> 
         <section className="control">
-            <span className={!this.state.vision ? "active" : ""}>TODAY</span>
+            <span  onClick={() => this.changeVision()} className={(this.state.vision === "Today") ? "active" : ""}>TODAY</span>
             |
-            <span className={this.state.vision ? "active" : ""}>VISION</span>
+            <span  onClick={() => this.changeVision()} className={(this.state.vision === "Zone") ? "active" : ""}>VISION</span>
         </section>
         <section className="info">
           <input type="text" placeholder="Search" />
-          {data.default.filter(d => (d["Scenario"] === "Today")).map(d =>
-              <InfoCard
-                data={d}
-              />
+          <div className="results">
+            {data.default.filter(d => (d["Scenario"] === this.state.vision)).map(d =>
+                <InfoCard
+                  data={d}
+                />
             )}
+          </div>
           
         </section> 
         <section className="map">
