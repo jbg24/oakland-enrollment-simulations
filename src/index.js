@@ -2,6 +2,7 @@ import './styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
+import * as data from "./data/text.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
@@ -14,11 +15,13 @@ class Map extends React.PureComponent {
     this.state = {
       lng: -122.26,
       lat: 37.79,
-      zoom: 12
+      zoom: 12,
+      vision: false,
     };
     this.mapContainer = React.createRef();
   }
   componentDidMount() {
+    console.log(data);
     const { lng, lat, zoom } = this.state;
     const map = new mapboxgl.Map({
       container: this.mapContainer.current,
@@ -40,14 +43,21 @@ class Map extends React.PureComponent {
     return (
       <div className="grid-container">
         <section className="header">
+          <h1>ACROSS LINES</h1>
         </section> 
         <section className="control">
-
+            <span className={!this.state.vision ? "active" : ""}>TODAY</span>
+            |
+            <span className={this.state.vision ? "active" : ""}>VISION</span>
         </section>
         <section className="info">
-          <InfoCard schoolname={"School 1"}/>
-          <InfoCard schoolname={"School 2"}/>
-          <InfoCard schoolname={"School 3"}/>
+          <input type="text" placeholder="Search" />
+          {data.default.filter(d => (d["Scenario"] === "Today")).map(d =>
+              <InfoCard
+                data={d}
+              />
+            )}
+          
         </section> 
         <section className="map">
           <div ref={this.mapContainer} className="map-container" />

@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "dependencies": {
+    "node-sass": "*",
+    "json-loader": "^0.5.7",
     "mapbox-gl": "^2.1.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",

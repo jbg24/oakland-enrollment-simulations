@@ -5,6 +5,10 @@ $lg-screen: 769px;
   font-family: "Helvetica Neue",Arial, Helvetica, sans-serif
 }
 
+body {
+  margin:0;
+} 
+
 .grid-container  {
   display: grid;
   height:100vh;
@@ -40,6 +44,7 @@ $lg-screen: 769px;
 .info { 
   grid-area: info; 
   background-color: white;
+  padding:0.5rem;
 }
 
 .map { 
@@ -58,4 +63,39 @@ $lg-screen: 769px;
   right: 0;
   left: 0;
   bottom: 0;
+}
+
+.header {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:0 25%;
+  text-align:center;
+  
+  h1 {
+    font-size:2rem;
+  }
+}
+
+.control {
+  color: white;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: white;
+    opacity: 0.75;
+    letter-spacing:0.2rem;
+    margin:0 1rem;
+
+    &.active {
+      font-weight: 900;
+      opacity: 1;
+      color: #333;
+      background-color:white;
+      padding:5px 10px;
+      border-radius:5px;
+    }
+  }
 }

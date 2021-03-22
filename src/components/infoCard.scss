@@ -1,11 +1,23 @@
 .infocard {
-    background-color: #f5f2ed;
-    width:100%;
+    background-color: #ececec;
+    border: 1px solid #dddddd;
+    width:calc(100% - 1rem);
     padding:10px;
     margin:0 0 2rem;
 
     .statsboard {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+
+            div.square {
+                width: 15%;
+                background-color: #00ad45;
+            }
+
+            div.square:after {
+                content: "";
+                display: block;
+                padding-bottom: 100%;
+            }
     }
 }
