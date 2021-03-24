@@ -4,20 +4,38 @@
     width:calc(100% - 1rem);
     padding:10px;
     margin:0 0 2rem;
+    font-size:0.8rem;
+    display: grid;
+    grid-template-columns: 1fr 50px 50px 50px 1fr;
+    grid-template-rows: 1fr 50px 2fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "school-name school-name school-name school-name school-score"
+        ". sq-1 sq-2 sq-3 ."
+        ". ch-1 ch-2 ch-3 ."
+        "gap-p gap-p gap-p gap-p gap-p"
+        "gap-t gap-t gap-t gap-t gap-t";
 
-    .statsboard {
-        display: flex;
-        justify-content: center;
 
-            div.square {
-                width: 15%;
-                background-color: #00ad45;
-            }
+    .school-name { 
+        grid-area: school-name;
+        font-weight: 900; 
+    }
+    .school-score { 
+        grid-area: school-score;
+        font-weight: 900; 
+        text-align:right;
+    }
+    .gap-p { grid-area: gap-p; }
+    .gap-t { grid-area: gap-t; }
+    .sq-1 { grid-area: sq-1; }
+    .sq-2 { grid-area: sq-2; }
+    .sq-3 { grid-area: sq-3; }
+    .ch-1 { grid-area: ch-1; }
+    .ch-2 { grid-area: ch-2; }
+    .ch-3 { grid-area: ch-3; }
 
-            div.square:after {
-                content: "";
-                display: block;
-                padding-bottom: 100%;
-            }
+    .square {
+        background-color: green
     }
 }
