@@ -1,5 +1,5 @@
 import './styles.scss';
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
 import { processLocations } from "./helpers/processLocations.js"
@@ -88,12 +88,12 @@ class Map extends React.PureComponent {
         'source': 'bounds-vision',
         'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
         'layout': {
-          'visibility': visibleNone
+          'visibility': visibleToday
         },
         'paint': {
           'fill-color': [
             "rgb",
-            255,
+            ["*", 63, ["get", "Zone_5"]],
             161,
             ["*", 63, ["get", "Zone_5"]]
           ],
