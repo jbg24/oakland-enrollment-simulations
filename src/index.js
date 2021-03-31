@@ -2,7 +2,7 @@ import './styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
-import * as data from "./data/text.json"
+import * as data from "./data/scores.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
@@ -48,29 +48,32 @@ class Map extends React.PureComponent {
     });
 
     map.on('load', function () {
+
       map.addSource('bounds-today', {
         type: 'vector',
         url: 'mapbox://tylermachado.ctywuxms'
       });
+      map.addLayer({
+        'id': 'bounds-today-data',
+        'type': 'fill',
+        'source': 'bounds-today',
+        'source-layer': 'OUSD_ESAA_1920-4yapi9',
+        'layout': {
+          'visibility': visibleToday
+        },
+        'paint': {
+          'fill-color': [
+            "rgb",
+            0,
+            ["-", ["get", "AAID"], 101],
+            ["*", 1, ["get", "AAID"]]
+          ],
+          'fill-opacity': 1
+        }
+      });
 
-    map.addLayer({
-      'id': 'bounds-today-data',
-      'type': 'fill',
-      'source': 'bounds-today',
-      'source-layer': 'OUSD_ESAA_1920-4yapi9',
-      'layout': {
-        'visibility': visibleToday
-      },
-      'paint': {
-        'fill-color': [
-          "rgb",
-          0,
-          ["-", ["get", "AAID"], 101],
-          ["*", 1, ["get", "AAID"]]
-        ],
-        'fill-opacity': 1
-      }
-    });
+
+
 
       map.addSource('bounds-vision', {
         type: 'vector',
@@ -96,11 +99,12 @@ class Map extends React.PureComponent {
         }
       });
 
+
+
       map.addSource('census-blocks', {
         type: 'vector',
         url: 'mapbox://tylermachado.3unavpo1'
       });
-
       map.addLayer({
         'id': 'census-blocks-data',
         'type': 'line',
@@ -117,8 +121,7 @@ class Map extends React.PureComponent {
       });
     })
 
-    
-
+  
     map.on('move', () => {
       this.setState({
         lng: map.getCenter().lng.toFixed(4),
