@@ -61,7 +61,7 @@ class Map extends React.PureComponent {
         'source': 'bounds-today',
         'source-layer': 'OUSD_ESAA_1920-4yapi9',
         'layout': {
-          'visibility': visibleToday
+          'visibility': 'none'
         },
         'paint': {
           'fill-color': [
@@ -88,7 +88,7 @@ class Map extends React.PureComponent {
         'source': 'bounds-vision',
         'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
         'layout': {
-          'visibility': visibleToday
+          'visibility': 'none'
         },
         'paint': {
           'fill-color': [
@@ -161,6 +161,36 @@ class Map extends React.PureComponent {
         zoom: map.getZoom().toFixed(2)
       });
     });
+
+
+
+    map.on('idle', () => {
+      if (this.state.vision === "Today") {
+        map.setLayoutProperty(
+          'bounds-today-data',
+          'visibility',
+          'visible'
+        )
+
+        map.setLayoutProperty(
+          'bounds-vision-data',
+          'visibility',
+          'none'
+        )
+      } else {
+        map.setLayoutProperty(
+          'bounds-vision-data',
+          'visibility',
+          'visible'
+        )
+
+        map.setLayoutProperty(
+          'bounds-today-data',
+          'visibility',
+          'none'
+        )
+      }
+    })
   }
 
   render() {
