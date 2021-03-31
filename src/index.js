@@ -2,7 +2,9 @@ import './styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
+import { processLocations } from "./helpers/processLocations.js"
 import * as data from "./data/scores.json"
+import * as locations from "./data/locations.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
@@ -119,7 +121,37 @@ class Map extends React.PureComponent {
           'line-width': 1
         }
       });
-    })
+    
+
+
+      map.addSource('school-locations-data', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': processLocations(locations)
+        }
+      });
+      map.addLayer({
+        'id': 'school-locations',
+        'type': 'circle',
+        'source': 'school-locations-data',
+        // 'layout': {
+        //   'text-field': ['get', 'title'],
+        //   'text-font': [
+        //     'Open Sans Semibold',
+        //     'Arial Unicode MS Bold'
+        //   ],
+        //   'text-offset': [0, 1.25],
+        //   'text-anchor': 'top'
+        // }
+        'paint': {
+          'circle-color': 'white',
+          'circle-stroke-color': 'black',
+          'circle-stroke-width': 4,
+          'circle-radius': 10
+        }
+      });
+    }) // map on load
 
   
     map.on('move', () => {

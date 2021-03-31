@@ -1,0 +1,380 @@
+[
+  {
+    "Name": "Chabot",
+    "ID": "01612596001648",
+    "Longitude": -122.242938,
+    "Latitude": 37.850664,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Crocker",
+    "ID": "01612596001754",
+    "Longitude": -122.22738500000001,
+    "Latitude": 37.811364000000005,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Hillcrest",
+    "ID": "01612596001911",
+    "Longitude": -122.232872,
+    "Latitude": 37.840441999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Kaiser",
+    "ID": "01612596001895",
+    "Longitude": -122.23181000000001,
+    "Latitude": 37.853077,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "MLA",
+    "ID": "01612596118640",
+    "Longitude": -122.19779399999999,
+    "Latitude": 37.780326,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Montclair",
+    "ID": "01612596002083",
+    "Longitude": -122.21281,
+    "Latitude": 37.831092,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Thornhill",
+    "ID": "01612596002216",
+    "Longitude": -122.211525,
+    "Latitude": 37.836187,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Peralta",
+    "ID": "01612596002109",
+    "Longitude": -122.25881100000001,
+    "Latitude": 37.848963,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Sankofa",
+    "ID": "01612590110254",
+    "Longitude": -122.26443200000001,
+    "Latitude": 37.847125,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Sequoia",
+    "ID": "01612596002174",
+    "Longitude": -122.211417,
+    "Latitude": 37.802314,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Glenview",
+    "ID": "01612596001853",
+    "Longitude": -122.218775,
+    "Latitude": 37.805477,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Emerson",
+    "ID": "01612596001812",
+    "Longitude": -122.257306,
+    "Latitude": 37.834628,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Laurel",
+    "ID": "01612596001994",
+    "Longitude": -122.19664399999999,
+    "Latitude": 37.79307,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Franklin",
+    "ID": "01612596001820",
+    "Longitude": -122.24829199999999,
+    "Latitude": 37.793794,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Garfield",
+    "ID": "01612596001846",
+    "Longitude": -122.23578799999999,
+    "Latitude": 37.786684,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "SEED",
+    "ID": "01612590110247",
+    "Longitude": -122.223903,
+    "Latitude": 37.792204,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Joaquin Miller",
+    "ID": "01612596001945",
+    "Longitude": -122.201777,
+    "Latitude": 37.818545,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Piedmont",
+    "ID": "01612596002117",
+    "Longitude": -122.248795,
+    "Latitude": 37.829071,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Global Family",
+    "ID": "01612590115584",
+    "Longitude": -122.21325900000001,
+    "Latitude": 37.779348999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Prescott",
+    "ID": "01612596002125",
+    "Longitude": -122.29803400000002,
+    "Latitude": 37.80846,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "La Escuelita",
+    "ID": "01612596096523",
+    "Longitude": -122.257279,
+    "Latitude": 37.796003999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Bella Vista",
+    "ID": "01612596001655",
+    "Longitude": -122.23708799999999,
+    "Latitude": 37.800354999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Lincoln",
+    "ID": "01612596002018",
+    "Longitude": -122.267151,
+    "Latitude": 37.80011,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Carl Munck",
+    "ID": "01612596001697",
+    "Longitude": -122.173828,
+    "Latitude": 37.794753,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Manzanita",
+    "ID": "01612596002042",
+    "Longitude": -122.223903,
+    "Latitude": 37.792204,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "MLK",
+    "ID": "01612596072235",
+    "Longitude": -122.28298400000001,
+    "Latitude": 37.805679999999995,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Redwood Hts",
+    "ID": "01612596002141",
+    "Longitude": -122.186264,
+    "Latitude": 37.797077,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "ICS",
+    "ID": "01612596118616",
+    "Longitude": -122.230503,
+    "Latitude": 37.78008,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Reach",
+    "ID": "01612590110239",
+    "Longitude": -122.16136499999999,
+    "Latitude": 37.747088,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Cleveland",
+    "ID": "01612596001739",
+    "Longitude": -122.24405,
+    "Latitude": 37.804369,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Madison Lower",
+    "ID": "01612596002182",
+    "Longitude": -122.177498,
+    "Latitude": 37.728041,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "ACORN Woodland",
+    "ID": "01612596002273",
+    "Longitude": -122.18605500000001,
+    "Latitude": 37.752862,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Fruitvale",
+    "ID": "01612596001838",
+    "Longitude": -122.21407099999999,
+    "Latitude": 37.796228,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Hoover",
+    "ID": "01612596057046",
+    "Longitude": -122.27445,
+    "Latitude": 37.822947,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Greenleaf",
+    "ID": "01612590115618",
+    "Longitude": -122.194849,
+    "Latitude": 37.764386,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Burckhalter",
+    "ID": "01612596001689",
+    "Longitude": -122.16679099999999,
+    "Latitude": 37.775578,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Parker",
+    "ID": "01612596002091",
+    "Longitude": -122.16559699999999,
+    "Latitude": 37.765640000000005,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Futures",
+    "ID": "01612590115576",
+    "Longitude": -122.19188700000001,
+    "Latitude": 37.761424,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Horace Mann",
+    "ID": "01612596001929",
+    "Longitude": -122.202455,
+    "Latitude": 37.77355,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "TCN",
+    "ID": "01612590100792",
+    "Longitude": -122.230503,
+    "Latitude": 37.78008,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Markham",
+    "ID": "01612596002059",
+    "Longitude": -122.178873,
+    "Latitude": 37.765296,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Bridges",
+    "ID": "01612596002075",
+    "Longitude": -122.20653100000001,
+    "Latitude": 37.767781,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "EnCompass",
+    "ID": "01612590102988",
+    "Longitude": -122.18605500000001,
+    "Latitude": 37.752862,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Korematsu",
+    "ID": "01612590112813",
+    "Longitude": -122.173556,
+    "Latitude": 37.737501,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Allendale",
+    "ID": "01612596001630",
+    "Longitude": -122.20516,
+    "Latitude": 37.788641999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Grass Valley",
+    "ID": "01612596001879",
+    "Longitude": -122.125853,
+    "Latitude": 37.753009999999996,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "PRIDE",
+    "ID": "01612590115600",
+    "Longitude": -122.174458,
+    "Latitude": 37.759065,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "RISE",
+    "ID": "01612590110262",
+    "Longitude": -122.178648,
+    "Latitude": 37.752093,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Sojourner Truth",
+    "ID": "01612596114011",
+    "Longitude": -122.15353200000001,
+    "Latitude": 37.766765,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Community United",
+    "ID": "01612590115204",
+    "Longitude": -122.19188700000001,
+    "Latitude": 37.761424,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Howard",
+    "ID": "01612596001713",
+    "Longitude": -122.151357,
+    "Latitude": 37.76215,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "New Highland",
+    "ID": "01612596001903",
+    "Longitude": -122.178648,
+    "Latitude": 37.752093,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Esperanza",
+    "ID": "01612596002190",
+    "Longitude": -122.173556,
+    "Latitude": 37.737501,
+    "Level": "Elementary"
+  },
+  {
+    "Name": "Brookfield",
+    "ID": "01612596001663",
+    "Longitude": -122.189002,
+    "Latitude": 37.734711,
+    "Level": "Elementary"
+  }
+]
