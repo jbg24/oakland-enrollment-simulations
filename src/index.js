@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
 import { processLocations } from "./helpers/processLocations.js"
+import { colorScale } from "./helpers/colorScale.js"
 import * as data from "./data/scores.json"
 import * as locations from "./data/locations.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
@@ -18,9 +19,7 @@ class Map extends React.PureComponent {
       lng: -122.214,
       lat: 37.796,
       zoom: 11,
-      vision: "Today",
-      visibleToday: 'visible',
-      visibleZone: 'none'
+      vision: "Today"
     };
     this.changeVision = this.changeVision.bind(this);
     this.mapContainer = React.createRef();
@@ -41,10 +40,11 @@ class Map extends React.PureComponent {
     }
   }
   componentDidMount() {
+    console.log()
     const { lng, lat, zoom, vision, visibleToday, visibleNone } = this.state;
     const map = new mapboxgl.Map({
       container: this.mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: 'mapbox://styles/mapbox/light-v10',
       center: [lng, lat],
       zoom: zoom
     });
@@ -65,12 +65,15 @@ class Map extends React.PureComponent {
         },
         'paint': {
           'fill-color': [
-            "rgb",
-            0,
-            ["-", ["get", "AAID"], 101],
-            ["*", 1, ["get", "AAID"]]
+            'interpolate-hcl',
+            ['linear'],
+            ['get', 'AAID'],
+            100,
+            ['to-color', '#12a6a3'],
+            200,
+            ['to-color', '#d11515']
           ],
-          'fill-opacity': 1
+          'fill-opacity': 0.6
         }
       });
 
@@ -92,12 +95,15 @@ class Map extends React.PureComponent {
         },
         'paint': {
           'fill-color': [
-            "rgb",
-            ["*", 63, ["get", "Zone_5"]],
-            161,
-            ["*", 63, ["get", "Zone_5"]]
+            'interpolate-hcl',
+            ['linear'],
+            ['get', 'Zone_5'],
+            0,
+            ['to-color', '#12a6a3'],
+            4,
+            ['to-color', '#d11515']
           ],
-          'fill-opacity': 1
+          'fill-opacity': 0.6
         }
       });
 
@@ -117,7 +123,7 @@ class Map extends React.PureComponent {
           'line-cap': 'round'
         },
         'paint': {
-          'line-color': '#ff69b4',
+          'line-color': '#000001',
           'line-width': 1
         }
       });
@@ -135,20 +141,11 @@ class Map extends React.PureComponent {
         'id': 'school-locations',
         'type': 'circle',
         'source': 'school-locations-data',
-        // 'layout': {
-        //   'text-field': ['get', 'title'],
-        //   'text-font': [
-        //     'Open Sans Semibold',
-        //     'Arial Unicode MS Bold'
-        //   ],
-        //   'text-offset': [0, 1.25],
-        //   'text-anchor': 'top'
-        // }
         'paint': {
           'circle-color': 'white',
           'circle-stroke-color': 'black',
-          'circle-stroke-width': 4,
-          'circle-radius': 10
+          'circle-stroke-width': 3,
+          'circle-radius': 6
         }
       });
     }) // map on load
