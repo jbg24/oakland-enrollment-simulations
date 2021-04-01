@@ -19,29 +19,25 @@ class Map extends React.PureComponent {
       lng: -122.214,
       lat: 37.796,
       zoom: 11,
-      vision: "Today"
+      scenario: "Today"
     };
-    this.changeVision = this.changeVision.bind(this);
+    this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
   }
-  changeVision() {
-    if (this.state.vision === "Today") {
+  changeScenario() {
+    if (this.state.scenario === "Today") {
       this.setState({ 
-        vision: "Zone",
-        visibleToday: 'none',
-        visibleZone: 'visible'
+        scenario: "Zone"
       });
     } else {
       this.setState({ 
-        vision: "Today",
-        visibleToday: 'visible',
-        visibleZone: 'none'
+        scenario: "Today"
       })
     }
   }
   componentDidMount() {
     console.log()
-    const { lng, lat, zoom, vision, visibleToday, visibleNone } = this.state;
+    const { lng, lat, zoom, scenario } = this.state;
     const map = new mapboxgl.Map({
       container: this.mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v10',
@@ -80,15 +76,15 @@ class Map extends React.PureComponent {
 
 
 
-      map.addSource('bounds-vision', {
+      map.addSource('bounds-scenario', {
         type: 'vector',
         url: 'mapbox://tylermachado.3a0n7mkn'
       });
 
       map.addLayer({
-        'id': 'bounds-vision-data',
+        'id': 'bounds-scenario-data',
         'type': 'fill',
-        'source': 'bounds-vision',
+        'source': 'bounds-scenario',
         'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
         'layout': {
           'visibility': 'none'
@@ -162,7 +158,7 @@ class Map extends React.PureComponent {
 
 
     map.on('idle', () => {
-      if (this.state.vision === "Today") {
+      if (this.state.scenario === "Today") {
         map.setLayoutProperty(
           'bounds-today-data',
           'visibility',
@@ -170,13 +166,13 @@ class Map extends React.PureComponent {
         )
 
         map.setLayoutProperty(
-          'bounds-vision-data',
+          'bounds-scenario-data',
           'visibility',
           'none'
         )
       } else {
         map.setLayoutProperty(
-          'bounds-vision-data',
+          'bounds-scenario-data',
           'visibility',
           'visible'
         )
@@ -198,14 +194,14 @@ class Map extends React.PureComponent {
           <h1>ACROSS LINES</h1>
         </section> 
         <section className="control">
-            <span  onClick={() => this.changeVision()} className={(this.state.vision === "Today") ? "active" : ""}>TODAY</span>
+            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Today") ? "active" : ""}>TODAY</span>
             |
-            <span  onClick={() => this.changeVision()} className={(this.state.vision === "Zone") ? "active" : ""}>VISION</span>
+            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active" : ""}>ZONE</span>
         </section>
         <section className="info">
           <input type="text" placeholder="Search" />
           <div className="results">
-            {data.default.filter(d => (d["Scenario"] === this.state.vision)).map(d =>
+            {data.default.filter(d => (d["Scenario"] === this.state.scenario)).map(d =>
                 <InfoCard
                   data={d}
                 />
