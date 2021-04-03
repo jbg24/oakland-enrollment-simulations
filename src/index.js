@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import InfoCard from "./components/infoCard.jsx"
 import { processLocations } from "./helpers/processLocations.js"
 import { colorScale } from "./helpers/colorScale.js"
+import { join } from "./helpers/join.js"
 import * as data from "./data/scores.json"
 import * as locations from "./data/locations.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
@@ -188,6 +189,22 @@ class Map extends React.PureComponent {
 
   render() {
     const { lng, lat, zoom } = this.state;
+    const joinedData = join(locations.default, data.default, "ID", "School ID", function (table2, table1) {
+      return {
+        "Name": table1["Name"],
+        "School ID": table2["School ID"],
+        "Scenario": table2["Scenario"],
+        "Cluster 1": table2["Cluster 1"],
+        "Cluster 2": table2["Cluster 2"],
+        "Cluster 3": table2["Cluster 3"],
+        "Cluster 1 Change on Today": table2["Cluster 1 Change on Today"],
+        "Cluster 2 Change on Today": table2["Cluster 2 Change on Today"],
+        "Cluster 3 Change on Today": table2["Cluster 3 Change on Today"],
+        "Racial Diversity Score": table2["Racial Diversity Score"],
+        "Racial-Poverty Gap Contribution": table2["Racial-Poverty Gap Contribution"],
+        "Racial-Travel Gap Contribution": table2["Racial-Travel Gap Contribution"]
+      };
+    });
     return (
       <div className="grid-container">
         <section className="header">
@@ -201,9 +218,10 @@ class Map extends React.PureComponent {
         <section className="info">
           <input type="text" placeholder="Search" />
           <div className="results">
-            {data.default.filter(d => (d["Scenario"] === this.state.scenario)).map(d =>
+            {joinedData.filter(d => (d["Scenario"] === this.state.scenario)).sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1).map(d =>
                 <InfoCard
                   data={d}
+                  key={d["School ID"]}
                 />
             )}
           </div>

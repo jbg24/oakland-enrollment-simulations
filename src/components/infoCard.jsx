@@ -25,7 +25,7 @@ class InfoCard extends React.Component {
     render() {
         return (
             <section className="infocard">
-                <div className="school-name">{this.props.data["School ID"]}</div>
+                <div className="school-name">{this.props.data["Name"]}</div>
                 <div className="school-score">{this.props.data["Racial Diversity Score"]}</div>
                 <div className="sq-1 square" style={{ opacity: this.props.data["Cluster 1"]}}></div>
                 <div className="sq-2 square" style={{ opacity: this.props.data["Cluster 2"]}}></div>
