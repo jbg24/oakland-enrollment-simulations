@@ -172,9 +172,9 @@ class Map extends React.PureComponent {
 
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
-      map.on('click', 'places', function (e) {
+      map.on('click', 'school-locations', function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.description;
+        var description = e.features[0].properties.title;
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
