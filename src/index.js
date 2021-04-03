@@ -13,6 +13,26 @@ import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = 'pk.eyJ1IjoidHlsZXJtYWNoYWRvIiwiYSI6ImNpbXY1YmMxMTAybTh1cGtrYmY3bjFiNHMifQ.e7Jn45kHrT5m2SbpSCZq5Q';
 
+const joinedData = join(locations.default, data.default, "ID", "School ID", function (table2, table1) {
+  return {
+    "Name": table1["Name"],
+    "Longitude": table1["Longitude"],
+    "Latitude": table1["Latitude"],
+    "Level": table1["Level"],
+    "School ID": table2["School ID"],
+    "Scenario": table2["Scenario"],
+    "Cluster 1": table2["Cluster 1"],
+    "Cluster 2": table2["Cluster 2"],
+    "Cluster 3": table2["Cluster 3"],
+    "Cluster 1 Change on Today": table2["Cluster 1 Change on Today"],
+    "Cluster 2 Change on Today": table2["Cluster 2 Change on Today"],
+    "Cluster 3 Change on Today": table2["Cluster 3 Change on Today"],
+    "Racial Diversity Score": table2["Racial Diversity Score"],
+    "Racial-Poverty Gap Contribution": table2["Racial-Poverty Gap Contribution"],
+    "Racial-Travel Gap Contribution": table2["Racial-Travel Gap Contribution"]
+  };
+});
+
 class Map extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -131,7 +151,11 @@ class Map extends React.PureComponent {
         'type': 'geojson',
         'data': {
           'type': 'FeatureCollection',
-          'features': processLocations(locations)
+          'features': processLocations(
+            joinedData.filter(d => 
+              (d["Scenario"] === "Today")
+            )
+          )
         }
       });
       map.addLayer({
@@ -144,6 +168,35 @@ class Map extends React.PureComponent {
           'circle-stroke-width': 3,
           'circle-radius': 6
         }
+      });
+
+      // When a click event occurs on a feature in the places layer, open a popup at the
+      // location of the feature, with description HTML from its properties.
+      map.on('click', 'places', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map);
+      });
+
+      // Change the cursor to a pointer when the mouse is over the places layer.
+      map.on('mouseenter', 'places', function () {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', 'places', function () {
+        map.getCanvas().style.cursor = '';
       });
     }) // map on load
 
@@ -189,22 +242,7 @@ class Map extends React.PureComponent {
 
   render() {
     const { lng, lat, zoom } = this.state;
-    const joinedData = join(locations.default, data.default, "ID", "School ID", function (table2, table1) {
-      return {
-        "Name": table1["Name"],
-        "School ID": table2["School ID"],
-        "Scenario": table2["Scenario"],
-        "Cluster 1": table2["Cluster 1"],
-        "Cluster 2": table2["Cluster 2"],
-        "Cluster 3": table2["Cluster 3"],
-        "Cluster 1 Change on Today": table2["Cluster 1 Change on Today"],
-        "Cluster 2 Change on Today": table2["Cluster 2 Change on Today"],
-        "Cluster 3 Change on Today": table2["Cluster 3 Change on Today"],
-        "Racial Diversity Score": table2["Racial Diversity Score"],
-        "Racial-Poverty Gap Contribution": table2["Racial-Poverty Gap Contribution"],
-        "Racial-Travel Gap Contribution": table2["Racial-Travel Gap Contribution"]
-      };
-    });
+    
     return (
       <div className="grid-container">
         <section className="header">
@@ -218,7 +256,10 @@ class Map extends React.PureComponent {
         <section className="info">
           <input type="text" placeholder="Search" />
           <div className="results">
-            {joinedData.filter(d => (d["Scenario"] === this.state.scenario)).sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1).map(d =>
+            {joinedData
+              .filter(d => (d["Scenario"] === this.state.scenario))
+              .sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1)
+              .map(d =>
                 <InfoCard
                   data={d}
                   key={d["School ID"]}

@@ -1,5 +1,5 @@
 export function processLocations(data) {
-    return Array.from(data.default.map(d => (
+    return Array.from(data.map(d => (
         {
             'type': 'Feature',
             'geometry': {
