@@ -4,27 +4,24 @@ import './infoCard.scss';
 class InfoCard extends React.Component {
     constructor(props) {
         super(props);
-        this.clickActive = this.clickActive.bind(this);
-        this.clickOut = this.clickOut.bind(this);
     }
 
     state = {
-        clicked: null
+        clicked: null,
+        currSchool: null
     }
 
-    clickActive(ind) {
-        this.setState({clicked: ind})
-        console.log("clicked item")
-    }
-
-    clickOut() {
-        this.setState({clicked: null})
-        console.log("clicked OUTSIDE")
+    isClicked = () => {
+        var current = this.props.data;
+        this.props.setCurr(current);
     }
 
     render() {
         return (
-            <section className="infocard">
+            <section 
+                className="infocard"
+                onClick={this.isClicked}
+            >
                 <div className="school-name">{this.props.data["Name"]}</div>
                 <div className="school-score">{this.props.data["Racial Diversity Score"]}</div>
                 <div className="sq-1 square" style={{ opacity: this.props.data["Cluster 1"]}}></div>

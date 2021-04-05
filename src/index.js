@@ -40,10 +40,19 @@ class Map extends React.PureComponent {
       lng: -122.214,
       lat: 37.796,
       zoom: 11,
-      scenario: "Today"
+      scenario: "Today",
+      currSchool: null
     };
+    this.sidebarClick = this.sidebarClick.bind(this);
     this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
+    this.map = '';
+  }
+  sidebarClick = (d) => {
+    this.setState({
+      zoom: 14,
+      currSchool: d
+    });
   }
   changeScenario() {
     if (this.state.scenario === "Today") {
@@ -57,9 +66,9 @@ class Map extends React.PureComponent {
     }
   }
   componentDidMount() {
-    console.log()
-    const { lng, lat, zoom, scenario } = this.state;
-    const map = new mapboxgl.Map({
+    const { lng, lat, zoom, scenario, currSchool } = this.state;
+    let map = this.map;
+    map = new mapboxgl.Map({
       container: this.mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v10',
       center: [lng, lat],
@@ -172,7 +181,7 @@ class Map extends React.PureComponent {
 
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
-      map.on('click', 'school-locations', function (e) {
+      map.on('click', 'school-locations', (e) => {
         var coordinates = e.features[0].geometry.coordinates.slice();
         var description = e.features[0].properties.title;
 
@@ -182,12 +191,11 @@ class Map extends React.PureComponent {
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
-
         new mapboxgl.Popup()
           .setLngLat(coordinates)
           .setHTML(description)
           .addTo(map);
-      });
+      }); // onClick popup
 
       // Change the cursor to a pointer when the mouse is over the places layer.
       map.on('mouseenter', 'places', function () {
@@ -199,7 +207,6 @@ class Map extends React.PureComponent {
         map.getCanvas().style.cursor = '';
       });
     }) // map on load
-
   
     map.on('move', () => {
       this.setState({
@@ -208,8 +215,6 @@ class Map extends React.PureComponent {
         zoom: map.getZoom().toFixed(2)
       });
     });
-
-
 
     map.on('idle', () => {
       if (this.state.scenario === "Today") {
@@ -238,20 +243,54 @@ class Map extends React.PureComponent {
         )
       }
     })
+
+    // map.on('idle', () => {
+    //   if (this.state.currSchool) {
+    //     const popup = document.getElementsByClassName('mapboxgl-popup');
+    //     if (popup.length) {
+    //       popup[0].remove();
+    //     }
+
+    //     new mapboxgl.Popup()
+    //       .setLngLat([this.state.currSchool["Longitude"], this.state.currSchool["Latitude"]])
+    //       .setHTML(this.state.currSchool["Name"])
+    //       .addTo(map);
+    //   }
+    // })
+
+    this.map = map;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { currSchool } = this.state;
+
+    if (currSchool !== prevProps.currSchool) {
+      this.map.on('idle', () => {
+        if (this.state.currSchool) {
+          const popup = document.getElementsByClassName('mapboxgl-popup');
+          if (popup.length) {
+            popup[0].remove();
+          }
+
+          new mapboxgl.Popup()
+            .setLngLat([this.state.currSchool["Longitude"], this.state.currSchool["Latitude"]])
+            .setHTML(this.state.currSchool["Name"])
+            .addTo(this.map);
+        }
+      })
+    }
   }
 
   render() {
-    const { lng, lat, zoom } = this.state;
-    
     return (
       <div className="grid-container">
         <section className="header">
           <h1>ACROSS LINES</h1>
         </section> 
         <section className="control">
-            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Today") ? "active" : ""}>TODAY</span>
+            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Today") ? "active control-button" : "control-button"}>TODAY</span>
             |
-            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active" : ""}>ZONE</span>
+            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
         </section>
         <section className="info">
           <input type="text" placeholder="Search" />
@@ -259,14 +298,15 @@ class Map extends React.PureComponent {
             {joinedData
               .filter(d => (d["Scenario"] === this.state.scenario))
               .sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1)
-              .map(d =>
+              .map((d) =>
                 <InfoCard
                   data={d}
                   key={d["School ID"]}
+                  setCurr={this.sidebarClick}
                 />
-            )}
+              )
+            }
           </div>
-          
         </section> 
         <section className="map">
           <div ref={this.mapContainer} className="map-container" />
