@@ -33,6 +33,8 @@ const joinedData = join(locations.default, data.default, "ID", "School ID", func
   };
 });
 
+let filteredData = joinedData;
+
 class Map extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -41,12 +43,17 @@ class Map extends React.PureComponent {
       lat: 37.796,
       zoom: 11,
       scenario: "Today",
-      currSchool: null
+      currSchool: null,
+      filter: ''
     };
     this.sidebarClick = this.sidebarClick.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
     this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
     this.map = '';
+  }
+  updateFilter(event) {
+    this.setState({ filter: event.target.value });
   }
   sidebarClick = (d) => {
     this.setState({
@@ -293,9 +300,10 @@ class Map extends React.PureComponent {
             <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
         </section>
         <section className="info">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" value={this.state.filter} onChange={this.updateFilter}  />
           <div className="results">
             {joinedData
+              .filter(d => this.state.filter === '' || d["Name"].toLowerCase().includes(this.state.filter))
               .filter(d => (d["Scenario"] === this.state.scenario))
               .sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1)
               .map((d) =>
