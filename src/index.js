@@ -189,7 +189,12 @@ class Map extends React.PureComponent {
         'type': 'circle',
         'source': 'school-locations-data',
         'paint': {
-          'circle-color': 'white',
+          'circle-color': [
+            'case',
+            ['boolean', ['feature-state', 'activeschool'], false],
+            "white",
+            "darkred"
+          ],
           'circle-stroke-color': 'black',
           'circle-stroke-width': 3,
           'circle-radius': 6
@@ -216,6 +221,7 @@ class Map extends React.PureComponent {
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
       map.on('click', 'school-locations', (e) => {
+        console.log(e.features[0])
         var coordinates = e.features[0].geometry.coordinates.slice();
         var description = e.features[0].properties.title;
 
@@ -301,15 +307,18 @@ class Map extends React.PureComponent {
     if (currSchool !== prevProps.currSchool) {
       this.map.on('idle', () => {
         if (this.state.currSchool) {
-          const popup = document.getElementsByClassName('mapboxgl-popup');
-          if (popup.length) {
-            popup[0].remove();
+          if (prevState.currSchool) {
+            this.map.setFeatureState(
+              { source: 'school-locations-data', id: prevState.currSchool["School ID"] },
+              { activeschool: false }
+            );
           }
+          
 
-          new mapboxgl.Popup()
-            .setLngLat([this.state.currSchool["Longitude"], this.state.currSchool["Latitude"]])
-            .setHTML(this.state.currSchool["Name"])
-            .addTo(this.map);
+          this.map.setFeatureState(
+            { source: 'school-locations-data', id: this.state.currSchool["School ID"] },
+            { activeschool: true }
+          );
         }
       })
     }

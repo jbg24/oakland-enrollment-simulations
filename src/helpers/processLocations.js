@@ -1,6 +1,7 @@
 export function processLocations(data) {
-    return Array.from(data.map(d => (
+    return Array.from(data.map((d,i) => (
         {
+            'id': d["School ID"],
             'type': 'Feature',
             'geometry': {
                 'type': 'Point',
