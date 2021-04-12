@@ -148,6 +148,16 @@ class Map extends React.PureComponent {
       });
       map.addLayer({
         'id': 'census-blocks-data',
+        'type': 'fill',
+        'source': 'census-blocks',
+        'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
+        'paint': {
+          'fill-color': '#fff',
+          'fill-opacity': 0.01
+        }
+      });
+      map.addLayer({
+        'id': 'census-blocks-data-outlines',
         'type': 'line',
         'source': 'census-blocks',
         'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
@@ -185,6 +195,23 @@ class Map extends React.PureComponent {
           'circle-radius': 6
         }
       });
+
+      // When a click event occurs on a feature in the places layer, open a popup at the
+      // location of the feature, with description HTML from its properties.
+      map.on('click', 'census-blocks-data', (e) => {
+        var coordinates = e.lngLat;
+        var properties = e.features[0].properties;
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML("<ul>"+
+          "<li>Education_: " + properties.Education_ + 
+          "<li>Home_Owner: " + properties.Home_Owner +
+          "<li>Household_: " + properties.Household_ +
+          "<li>Multi_Pare: " + properties.Multi_Pare +
+          "</ul>")
+          .addTo(map);
+      }); // onClick popup
 
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
