@@ -6,8 +6,8 @@
     margin:0 0 2rem;
     font-size:0.8rem;
     display: grid;
-    grid-template-columns: 1fr 50px 50px 50px 1fr;
-    grid-template-rows: 1fr 50px 2fr 1fr 1fr;
+    grid-template-columns: 1fr 60px 60px 60px 1fr;
+    grid-template-rows: 1fr 60px 2fr 1fr 1fr;
     gap: 0px 0px;
     grid-template-areas:
         "school-name school-name school-name school-name school-score"
@@ -36,12 +36,17 @@
     .ch-3 { grid-area: ch-3; }
 
     .square {
-        background-color: green
+        display:flex;
+        justify-content:center;
+        align-items:center;
     }
 
     .change {
         letter-spacing: -0.05em;
         font-size:11px;
         text-align: right;
+        display:flex;
+        justify-content:center;
+        align-items:top;
     }
 }

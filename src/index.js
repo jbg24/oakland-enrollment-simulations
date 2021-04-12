@@ -335,6 +335,7 @@ class Map extends React.PureComponent {
               .sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1)
               .map((d) =>
                 <InfoCard
+                  scenario={this.state.scenario}
                   data={d}
                   key={d["School ID"]}
                   setCurr={this.sidebarClick}
