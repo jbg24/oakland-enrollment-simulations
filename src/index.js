@@ -192,12 +192,17 @@ class Map extends React.PureComponent {
           'circle-color': [
             'case',
             ['boolean', ['feature-state', 'activeschool'], false],
-            "white",
-            "darkred"
+            "#cafc03",
+            "#ffffff"
           ],
           'circle-stroke-color': 'black',
           'circle-stroke-width': 3,
-          'circle-radius': 6
+          'circle-radius': [
+            'case',
+            ['boolean', ['feature-state', 'activeschool'], false],
+            18,
+            6
+          ]
         }
       });
 
@@ -314,7 +319,6 @@ class Map extends React.PureComponent {
             );
           }
           
-
           this.map.setFeatureState(
             { source: 'school-locations-data', id: this.state.currSchool["School ID"] },
             { activeschool: true }
