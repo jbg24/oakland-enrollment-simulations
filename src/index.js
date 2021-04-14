@@ -214,7 +214,7 @@ class Map extends React.PureComponent {
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML("<ul>"+
+          .setHTML("<h4>" + properties.GEOID10 + "</h4><ul>"+
           "<li>Education_: " + properties.Education_ + 
           "<li>Home_Owner: " + properties.Home_Owner +
           "<li>Household_: " + properties.Household_ +
