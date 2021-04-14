@@ -16,6 +16,10 @@
         "gap-p gap-p gap-p gap-p gap-p"
         "gap-t gap-t gap-t gap-t gap-t";
 
+    &.active-card {
+        background-color: #ffffff;
+    }
+
 
     .school-name { 
         grid-area: school-name;

@@ -19,7 +19,9 @@ class InfoCard extends React.Component {
     render() {
         return (
             <section 
-                className="infocard"
+                className={(this.props.data === this.props.currSchool) ?
+                    "infocard active-card" :
+                    "infocard"}
                 onClick={this.isClicked}
             >
                 <div className="school-name">{this.props.data["Name"]}</div>

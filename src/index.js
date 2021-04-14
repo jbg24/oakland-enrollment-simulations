@@ -192,8 +192,8 @@ class Map extends React.PureComponent {
           'circle-color': [
             'case',
             ['boolean', ['feature-state', 'activeschool'], false],
-            "#cafc03",
-            "#ffffff"
+            "#ffffff",
+            "#cccccc"
           ],
           'circle-stroke-color': 'black',
           'circle-stroke-width': 3,
@@ -352,6 +352,7 @@ class Map extends React.PureComponent {
                   data={d}
                   key={d["School ID"]}
                   setCurr={this.sidebarClick}
+                  currSchool={this.state.currSchool}
                 />
               )
             }
