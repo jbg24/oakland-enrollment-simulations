@@ -113,15 +113,15 @@ class Map extends React.PureComponent {
 
 
 
-      map.addSource('bounds-scenario', {
+      map.addSource('bounds-zone', {
         type: 'vector',
         url: 'mapbox://tylermachado.3a0n7mkn'
       });
 
       map.addLayer({
-        'id': 'bounds-scenario-data',
+        'id': 'bounds-zone-data',
         'type': 'fill',
-        'source': 'bounds-scenario',
+        'source': 'bounds-zone',
         'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
         'layout': {
           'visibility': 'none'
@@ -270,13 +270,13 @@ class Map extends React.PureComponent {
         )
 
         map.setLayoutProperty(
-          'bounds-scenario-data',
+          'bounds-zone-data',
           'visibility',
           'none'
         )
       } else {
         map.setLayoutProperty(
-          'bounds-scenario-data',
+          'bounds-zone-data',
           'visibility',
           'visible'
         )
