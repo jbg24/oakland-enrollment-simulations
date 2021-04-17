@@ -7,6 +7,7 @@ import { colorScale } from "./helpers/colorScale.js"
 import { join } from "./helpers/join.js"
 import * as data from "./data/scores.json"
 import * as locations from "./data/locations.json"
+import * as studentCounts from "./data/student-counts.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
@@ -60,6 +61,8 @@ class Map extends React.PureComponent {
       zoom: 14,
       currSchool: d
     });
+
+    // this.map.setPaintProperty('census-blocks-data', 'fill-opacity', 1);
   }
   changeScenario() {
     if (this.state.scenario === "Today") {
@@ -215,32 +218,32 @@ class Map extends React.PureComponent {
         new mapboxgl.Popup()
           .setLngLat(coordinates)
           .setHTML("<h4>" + properties.GEOID10 + "</h4><ul>"+
-          "<li>Education_: " + properties.Education_ + 
-          "<li>Home_Owner: " + properties.Home_Owner +
-          "<li>Household_: " + properties.Household_ +
-          "<li>Multi_Pare: " + properties.Multi_Pare +
+          "<li>Education_: " + properties.Education_.toFixed(2) + 
+          "<li>Home_Owner: " + properties.Home_Owner.toFixed(2) +
+          "<li>Household_: " + properties.Household_.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) +
+          "<li>Multi_Pare: " + properties.Multi_Pare.toFixed(2) +
           "</ul>")
           .addTo(map);
       }); // onClick popup
 
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
-      map.on('click', 'school-locations', (e) => {
-        console.log(e.features[0])
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.title;
+      // map.on('click', 'school-locations', (e) => {
+      //   console.log(e.features[0])
+      //   var coordinates = e.features[0].geometry.coordinates.slice();
+      //   var description = e.features[0].properties.title;
 
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-        new mapboxgl.Popup()
-          .setLngLat(coordinates)
-          .setHTML(description)
-          .addTo(map);
-      }); // onClick popup
+      //   // Ensure that if the map is zoomed out such that multiple
+      //   // copies of the feature are visible, the popup appears
+      //   // over the copy being pointed to.
+      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      //   }
+      //   new mapboxgl.Popup()
+      //     .setLngLat(coordinates)
+      //     .setHTML(description)
+      //     .addTo(map);
+      // }); // onClick popup
 
       // Change the cursor to a pointer when the mouse is over the places layer.
       map.on('mouseenter', 'places', function () {
@@ -307,10 +310,10 @@ class Map extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { currSchool } = this.state;
+    const { currSchool, scenario } = this.state;
 
     if (currSchool !== prevProps.currSchool) {
-      this.map.on('idle', () => {
+      // this.map.on('idle', () => {
         if (this.state.currSchool) {
           if (prevState.currSchool) {
             this.map.setFeatureState(
@@ -323,8 +326,25 @@ class Map extends React.PureComponent {
             { source: 'school-locations-data', id: this.state.currSchool["School ID"] },
             { activeschool: true }
           );
+
+          const countdata = studentCounts.default.filter((s) =>
+            (s["School ID"] === this.state.currSchool["School ID"]) && (s["Scenario"] === this.state.scenario)
+          )
+          const studentPopulationBlocks = (countdata.map(d => d["Census Block Group FIPS"]))
+
+          console.log(studentPopulationBlocks)
+
+          this.map
+            .setFilter('census-blocks-data', [
+              "!", [
+                'in',
+                ['get', 'GEOID10'],
+                ['literal', studentPopulationBlocks]
+              ]
+            ])
+            .setPaintProperty('census-blocks-data', 'fill-opacity', 0.7)
         }
-      })
+      // })
     }
   }
 
