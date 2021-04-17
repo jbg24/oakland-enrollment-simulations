@@ -222,32 +222,13 @@ class Map extends React.PureComponent {
         new mapboxgl.Popup()
           .setLngLat(coordinates)
           .setHTML("<h4>" + properties.GEOID10 + "</h4><ul>"+
-          "<li>Education_: " + properties.Education_.toFixed(2) + 
-          "<li>Home_Owner: " + properties.Home_Owner.toFixed(2) +
-          "<li>Household_: " + properties.Household_.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) +
-          "<li>Multi_Pare: " + properties.Multi_Pare.toFixed(2) +
+          "<li>Education Score: " + properties.Education_.toFixed(2) + 
+          "<li>Home Ownership: " + properties.Home_Owner.toFixed(2) +
+          "<li>Multi-Parent Households: " + properties.Multi_Pare.toFixed(2) +
+          "<li>Household Income: " + properties.Household_.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) +
           "</ul>")
           .addTo(map);
       }); // onClick popup
-
-      // When a click event occurs on a feature in the places layer, open a popup at the
-      // location of the feature, with description HTML from its properties.
-      // map.on('click', 'school-locations', (e) => {
-      //   console.log(e.features[0])
-      //   var coordinates = e.features[0].geometry.coordinates.slice();
-      //   var description = e.features[0].properties.title;
-
-      //   // Ensure that if the map is zoomed out such that multiple
-      //   // copies of the feature are visible, the popup appears
-      //   // over the copy being pointed to.
-      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      //   }
-      //   new mapboxgl.Popup()
-      //     .setLngLat(coordinates)
-      //     .setHTML(description)
-      //     .addTo(map);
-      // }); // onClick popup
 
       // Change the cursor to a pointer when the mouse is over the places layer.
       map.on('mouseenter', 'places', function () {
@@ -267,10 +248,6 @@ class Map extends React.PureComponent {
         zoom: map.getZoom().toFixed(2)
       });
     });
-
-    map.on('idle', () => {
-      
-    })
 
     this.map = map;
   }
@@ -326,8 +303,6 @@ class Map extends React.PureComponent {
           const studentPopulationBlocks = Object.fromEntries(countdata.map(d => 
             [d["Census Block Group FIPS"], this.opacityScale(d["Student Count"])]
           ))
-
-          console.log(studentPopulationBlocks)
 
           this.map
             .setPaintProperty(
