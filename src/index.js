@@ -1,6 +1,7 @@
 import './styles.scss';
 import React, { useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { scaleLinear } from 'd3-scale';
 import InfoCard from "./components/infoCard.jsx"
 import { processLocations } from "./helpers/processLocations.js"
 import { colorScale } from "./helpers/colorScale.js"
@@ -52,6 +53,9 @@ class Map extends React.PureComponent {
     this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
     this.map = '';
+    this.opacityScale = scaleLinear()
+      .domain([1, 107])
+      .range([0.4, 0])
   }
   updateFilter(event) {
     this.setState({ filter: event.target.value });
@@ -313,7 +317,6 @@ class Map extends React.PureComponent {
     const { currSchool, scenario } = this.state;
 
     if (currSchool !== prevProps.currSchool) {
-      // this.map.on('idle', () => {
         if (this.state.currSchool) {
           if (prevState.currSchool) {
             this.map.setFeatureState(
@@ -321,7 +324,6 @@ class Map extends React.PureComponent {
               { activeschool: false }
             );
           }
-          
           this.map.setFeatureState(
             { source: 'school-locations-data', id: this.state.currSchool["School ID"] },
             { activeschool: true }
@@ -332,19 +334,12 @@ class Map extends React.PureComponent {
           )
           
           const studentPopulationBlocks = Object.fromEntries(countdata.map(d => 
-            [d["Census Block Group FIPS"], Math.max(0, (1 - d["Student Count"]/10))]
+            [d["Census Block Group FIPS"], this.opacityScale(d["Student Count"])]
           ))
 
           console.log(studentPopulationBlocks)
 
           this.map
-            // .setFilter('census-blocks-data', [
-            //   "!", [
-            //     'in',
-            //     ['get', 'GEOID10'],
-            //     ['literal', Object.keys(studentPopulationBlocks)]
-            //   ]
-            // ])
             .setPaintProperty(
               'census-blocks-data', 
               'fill-opacity', 
@@ -355,7 +350,6 @@ class Map extends React.PureComponent {
               ]
             )
         }
-      // })
     }
   }
 
