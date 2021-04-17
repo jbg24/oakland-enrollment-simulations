@@ -169,7 +169,7 @@ class Map extends React.PureComponent {
           'line-cap': 'round'
         },
         'paint': {
-          'line-color': '#000001',
+          'line-color': '#555555',
           'line-width': 1
         }
       });
@@ -199,12 +199,12 @@ class Map extends React.PureComponent {
             "#cccccc"
           ],
           'circle-stroke-color': 'black',
-          'circle-stroke-width': 3,
+          'circle-stroke-width': 1.5,
           'circle-radius': [
             'case',
             ['boolean', ['feature-state', 'activeschool'], false],
-            18,
-            6
+            9,
+            3
           ]
         }
       });
@@ -330,19 +330,30 @@ class Map extends React.PureComponent {
           const countdata = studentCounts.default.filter((s) =>
             (s["School ID"] === this.state.currSchool["School ID"]) && (s["Scenario"] === this.state.scenario)
           )
-          const studentPopulationBlocks = (countdata.map(d => d["Census Block Group FIPS"]))
+          
+          const studentPopulationBlocks = Object.fromEntries(countdata.map(d => 
+            [d["Census Block Group FIPS"], Math.max(0, (1 - d["Student Count"]/10))]
+          ))
 
           console.log(studentPopulationBlocks)
 
           this.map
-            .setFilter('census-blocks-data', [
-              "!", [
-                'in',
+            // .setFilter('census-blocks-data', [
+            //   "!", [
+            //     'in',
+            //     ['get', 'GEOID10'],
+            //     ['literal', Object.keys(studentPopulationBlocks)]
+            //   ]
+            // ])
+            .setPaintProperty(
+              'census-blocks-data', 
+              'fill-opacity', 
+              [
+                'get',
                 ['get', 'GEOID10'],
                 ['literal', studentPopulationBlocks]
               ]
-            ])
-            .setPaintProperty('census-blocks-data', 'fill-opacity', 0.7)
+            )
         }
       // })
     }
