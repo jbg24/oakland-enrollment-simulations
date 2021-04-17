@@ -101,7 +101,7 @@ class Map extends React.PureComponent {
         'source': 'bounds-today',
         'source-layer': 'OUSD_ESAA_1920-4yapi9',
         'layout': {
-          'visibility': 'none'
+          'visibility': 'visible'
         },
         'paint': {
           'fill-color': [
@@ -269,52 +269,42 @@ class Map extends React.PureComponent {
     });
 
     map.on('idle', () => {
-      if (this.state.scenario === "Today") {
-        map.setLayoutProperty(
-          'bounds-today-data',
-          'visibility',
-          'visible'
-        )
-
-        map.setLayoutProperty(
-          'bounds-zone-data',
-          'visibility',
-          'none'
-        )
-      } else {
-        map.setLayoutProperty(
-          'bounds-zone-data',
-          'visibility',
-          'visible'
-        )
-
-        map.setLayoutProperty(
-          'bounds-today-data',
-          'visibility',
-          'none'
-        )
-      }
+      
     })
-
-    // map.on('idle', () => {
-    //   if (this.state.currSchool) {
-    //     const popup = document.getElementsByClassName('mapboxgl-popup');
-    //     if (popup.length) {
-    //       popup[0].remove();
-    //     }
-
-    //     new mapboxgl.Popup()
-    //       .setLngLat([this.state.currSchool["Longitude"], this.state.currSchool["Latitude"]])
-    //       .setHTML(this.state.currSchool["Name"])
-    //       .addTo(map);
-    //   }
-    // })
 
     this.map = map;
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { currSchool, scenario } = this.state;
+
+    if (scenario !== prevProps.scenario) {
+      if (scenario === "Today") {
+        this.map.setLayoutProperty(
+          'bounds-today-data',
+          'visibility',
+          'visible'
+        )
+
+        this.map.setLayoutProperty(
+          'bounds-zone-data',
+          'visibility',
+          'none'
+        )
+      } else {
+        this.map.setLayoutProperty(
+          'bounds-zone-data',
+          'visibility',
+          'visible'
+        )
+
+        this.map.setLayoutProperty(
+          'bounds-today-data',
+          'visibility',
+          'none'
+        )
+      }
+    }
 
     if (currSchool !== prevProps.currSchool) {
         if (this.state.currSchool) {
