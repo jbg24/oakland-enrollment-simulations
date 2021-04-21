@@ -55,7 +55,7 @@ class Map extends React.PureComponent {
     this.map = '';
     this.opacityScale = scaleLinear()
       .domain([1, 107])
-      .range([0.4, 0])
+      .range([0.6, 0.95])
   }
   updateFilter(event) {
     this.setState({ filter: event.target.value });
@@ -91,29 +91,44 @@ class Map extends React.PureComponent {
 
     map.on('load', function () {
 
+      map.addSource('census-blocks', {
+        type: 'vector',
+        url: 'mapbox://tylermachado.3unavpo1'
+      });
+      map.addLayer({
+        'id': 'census-blocks-data',
+        'type': 'fill',
+        'source': 'census-blocks',
+        'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
+        'paint': {
+          'fill-color': [
+            'interpolate-hcl',
+            ['linear'],
+            ['get', 'Cluster'],
+            0,
+            ['to-color', '#12a6a3'],
+            3,
+            ['to-color', '#d11515']
+          ],
+          'fill-opacity': 0.6
+        }
+      });
+
       map.addSource('bounds-today', {
         type: 'vector',
         url: 'mapbox://tylermachado.ctywuxms'
       });
       map.addLayer({
         'id': 'bounds-today-data',
-        'type': 'fill',
+        'type': 'line',
         'source': 'bounds-today',
         'source-layer': 'OUSD_ESAA_1920-4yapi9',
         'layout': {
           'visibility': 'visible'
         },
         'paint': {
-          'fill-color': [
-            'interpolate-hcl',
-            ['linear'],
-            ['get', 'AAID'],
-            100,
-            ['to-color', '#12a6a3'],
-            200,
-            ['to-color', '#d11515']
-          ],
-          'fill-opacity': 0.6
+          'line-color': '#555555',
+          'line-width': 2
         }
       });
 
@@ -127,42 +142,21 @@ class Map extends React.PureComponent {
 
       map.addLayer({
         'id': 'bounds-zone-data',
-        'type': 'fill',
+        'type': 'line',
         'source': 'bounds-zone',
         'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
         'layout': {
           'visibility': 'none'
         },
         'paint': {
-          'fill-color': [
-            'interpolate-hcl',
-            ['linear'],
-            ['get', 'Zone_5'],
-            0,
-            ['to-color', '#12a6a3'],
-            4,
-            ['to-color', '#d11515']
-          ],
-          'fill-opacity': 0.6
+          'line-color': '#555555',
+          'line-width': 3
         }
       });
 
 
 
-      map.addSource('census-blocks', {
-        type: 'vector',
-        url: 'mapbox://tylermachado.3unavpo1'
-      });
-      map.addLayer({
-        'id': 'census-blocks-data',
-        'type': 'fill',
-        'source': 'census-blocks',
-        'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
-        'paint': {
-          'fill-color': '#fff',
-          'fill-opacity': 0.01
-        }
-      });
+      
       map.addLayer({
         'id': 'census-blocks-data-outlines',
         'type': 'line',
@@ -174,7 +168,7 @@ class Map extends React.PureComponent {
         },
         'paint': {
           'line-color': '#555555',
-          'line-width': 1
+          'line-width': 0.67
         }
       });
     
@@ -307,12 +301,19 @@ class Map extends React.PureComponent {
           this.map
             .setPaintProperty(
               'census-blocks-data', 
-              'fill-opacity', 
-              [
-                'get',
-                ['get', 'GEOID10'],
-                ['literal', studentPopulationBlocks]
+              'fill-opacity', [
+                'case',
+                ['has',
+                  ['get', 'GEOID10'],
+                  ['literal', studentPopulationBlocks]
+                ],
+                ['get',
+                  ['get', 'GEOID10'],
+                  ['literal', studentPopulationBlocks]
+                ],
+                0.1
               ]
+              
             )
         }
     }
