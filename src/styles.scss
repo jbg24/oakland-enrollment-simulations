@@ -44,8 +44,8 @@ body {
 
 .info { 
   grid-area: info; 
-  background-color: white;
-  padding:0.5rem;
+  background-color: #dadada;
+  padding:0.5rem 0.5rem 0.5rem 0.2rem;
   overflow-y: scroll;
 
   input[type=text] {
