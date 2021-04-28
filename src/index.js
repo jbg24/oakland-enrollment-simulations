@@ -350,6 +350,20 @@ class Map extends React.PureComponent {
           </div>
         </section> 
         <section className="map">
+          <div class={
+            this.state.currSchool !== null
+              ? 'active-overlay activated'
+              : 'active-overlay'
+          }>
+            {
+              this.state.currSchool !== null
+              ? 'Current school: ' + this.state.currSchool["Name"]
+              : ''
+            }
+            <button>
+              x
+            </button>
+          </div>
           <div ref={this.mapContainer} className="map-container" />
         </section>;
         

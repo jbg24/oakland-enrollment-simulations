@@ -64,6 +64,27 @@ body {
   // bottom: 0;
 }
 
+.active-overlay {
+  button {
+    display: none;
+  }
+}
+
+.active-overlay.activated {
+  height:35px;
+  width:100%;
+  display:block;
+  position:absolute;
+  background-color:rgba(0,0,0,0.75);
+  z-index:10;
+  color:white;
+  text-align:center;
+
+  button {
+    display: block;
+  }
+}
+
 .map-container {
   position: absolute;
   top: 0;
