@@ -317,7 +317,7 @@ class Map extends React.PureComponent {
             <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
         </section>
         <section className="info">
-          <input type="text" placeholder="Search" value={this.state.filter} onChange={this.updateFilter}  />
+          <input type="text" placeholder="Filter schools" value={this.state.filter} onChange={this.updateFilter}  />
           <div className="results">
             {joinedData
               .filter(d => this.state.filter === '' || d["Name"].toLowerCase().includes(this.state.filter))
@@ -341,11 +341,13 @@ class Map extends React.PureComponent {
               ? 'active-overlay activated'
               : 'active-overlay'
           }>
-            {
-              this.state.currSchool !== null
-              ? 'Current school: ' + this.state.currSchool["Name"]
-              : ''
-            }
+            <span>
+              {
+                this.state.currSchool !== null
+                ? this.state.currSchool["Name"]
+                : ''
+              }
+            </span>
             <button onClick={() => this.resetActiveSchool()}>
               x
             </button>
