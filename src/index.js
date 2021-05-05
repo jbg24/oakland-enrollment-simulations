@@ -1,20 +1,23 @@
 import './styles.scss';
 import React, { useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { scaleLinear } from 'd3-scale';
+import * as d3 from 'd3-scale';
 import InfoCard from "./components/infoCard.jsx"
 import { processLocations } from "./helpers/processLocations.js"
-import { colorScale } from "./helpers/colorScale.js"
 import { join } from "./helpers/join.js"
+
+// loading data
 import * as data from "./data/scores.json"
 import * as locations from "./data/locations.json"
 import * as studentCounts from "./data/student-counts.json"
+
+// loading Mapbox items
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
-
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = 'pk.eyJ1IjoidHlsZXJtYWNoYWRvIiwiYSI6ImNpbXY1YmMxMTAybTh1cGtrYmY3bjFiNHMifQ.e7Jn45kHrT5m2SbpSCZq5Q';
 
+// merge school location data with scores data
 const joinedData = join(locations.default, data.default, "ID", "School ID", function (table2, table1) {
   return {
     "Name": table1["Name"],
@@ -35,8 +38,7 @@ const joinedData = join(locations.default, data.default, "ID", "School ID", func
   };
 });
 
-let filteredData = joinedData;
-
+// build the map app
 class Map extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -53,9 +55,9 @@ class Map extends React.PureComponent {
     this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
     this.map = '';
-    this.opacityScale = scaleLinear()
+    this.opacityScale = d3.scaleLog()
       .domain([1, 107])
-      .range([0.6, 0.95])
+      .range([0.55, 0.97])
   }
   updateFilter(event) {
     this.setState({ filter: event.target.value });
@@ -65,9 +67,8 @@ class Map extends React.PureComponent {
       zoom: 14,
       currSchool: d
     });
-
-    // this.map.setPaintProperty('census-blocks-data', 'fill-opacity', 1);
   }
+
   changeScenario() {
     if (this.state.scenario === "Today") {
       this.setState({ 
@@ -79,6 +80,7 @@ class Map extends React.PureComponent {
       })
     }
   }
+
   componentDidMount() {
     const { lng, lat, zoom, scenario, currSchool } = this.state;
     let map = this.map;
