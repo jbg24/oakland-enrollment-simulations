@@ -1,6 +1,6 @@
 {
-  "name": "mapboxAndReact",
-  "description": "Create a React web app that uses Mapbox GL JS to render a map.",
+  "name": "AcrossLinesDemo",
+  "description": "Demo of explorable scenarios for Across Lines",
   "version": "1.0.0",
   "main": "src/index.js",
   "dependencies": {
@@ -14,7 +14,8 @@
     "worker-loader": "^3.0.7"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "browserslist": [
     "defaults"
