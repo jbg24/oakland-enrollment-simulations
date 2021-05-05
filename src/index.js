@@ -55,6 +55,8 @@ class Map extends React.PureComponent {
     this.changeScenario = this.changeScenario.bind(this);
     this.mapContainer = React.createRef();
     this.map = '';
+
+    // this is the scale that controls the opacity of census blocks on active schools
     this.opacityScale = d3.scaleLog()
       .domain([1, 107])
       .range([0.55, 0.97])
@@ -84,6 +86,7 @@ class Map extends React.PureComponent {
   componentDidMount() {
     const { lng, lat, zoom, scenario, currSchool } = this.state;
     let map = this.map;
+
     map = new mapboxgl.Map({
       container: this.mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v10',
@@ -93,6 +96,7 @@ class Map extends React.PureComponent {
 
     map.on('load', function () {
 
+      // colored-in census blocks
       map.addSource('census-blocks', {
         type: 'vector',
         url: 'mapbox://tylermachado.3unavpo1'
@@ -112,10 +116,29 @@ class Map extends React.PureComponent {
             3,
             ['to-color', '#d11515']
           ],
-          'fill-opacity': 0.6
+          'fill-opacity': 0.6,
+          'fill-outline-color': '#555555'
         }
       });
 
+      // if we want to adjust the width of the outlines around census blocks, we will have to un-comment the below layer to add an 'lines' layer, due to Mapbox limitations
+
+      // map.addLayer({
+      //   'id': 'census-blocks-data-outlines',
+      //   'type': 'line',
+      //   'source': 'census-blocks',
+      //   'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
+      //   'layout': {
+      //     'line-join': 'round',
+      //     'line-cap': 'round'
+      //   },
+      //   'paint': {
+      //      'line-color': '#555555',
+      //     'line-width': 0.67
+      //   }
+      // });
+
+      // "Today" scenario boundaries
       map.addSource('bounds-today', {
         type: 'vector',
         url: 'mapbox://tylermachado.ctywuxms'
@@ -134,9 +157,7 @@ class Map extends React.PureComponent {
         }
       });
 
-
-
-
+      // "Zone" scenario boundaries
       map.addSource('bounds-zone', {
         type: 'vector',
         url: 'mapbox://tylermachado.3a0n7mkn'
@@ -155,27 +176,8 @@ class Map extends React.PureComponent {
           'line-width': 3
         }
       });
-
-
-
-      
-      map.addLayer({
-        'id': 'census-blocks-data-outlines',
-        'type': 'line',
-        'source': 'census-blocks',
-        'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-          'line-color': '#555555',
-          'line-width': 0.67
-        }
-      });
     
-
-
+      // Schools 
       map.addSource('school-locations-data', {
         'type': 'geojson',
         'data': {
@@ -225,16 +227,6 @@ class Map extends React.PureComponent {
           "</ul>")
           .addTo(map);
       }); // onClick popup
-
-      // Change the cursor to a pointer when the mouse is over the places layer.
-      map.on('mouseenter', 'places', function () {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-
-      // Change it back to a pointer when it leaves.
-      map.on('mouseleave', 'places', function () {
-        map.getCanvas().style.cursor = '';
-      });
     }) // map on load
   
     map.on('move', () => {
@@ -251,6 +243,7 @@ class Map extends React.PureComponent {
   componentDidUpdate(prevProps, prevState) {
     const { currSchool, scenario } = this.state;
 
+    // redraw scenario boundary lines
     if (scenario !== prevProps.scenario) {
       if (scenario === "Today") {
         this.map.setLayoutProperty(
@@ -277,8 +270,10 @@ class Map extends React.PureComponent {
           'none'
         )
       }
-    }
+    } // end redraw scenario boundary lines
 
+
+    // update active school
     if (currSchool !== prevProps.currSchool) {
         if (this.state.currSchool) {
           if (prevState.currSchool) {
@@ -292,34 +287,35 @@ class Map extends React.PureComponent {
             { activeschool: true }
           );
 
+          // filter student counts for newly active school
           const countdata = studentCounts.default.filter((s) =>
             (s["School ID"] === this.state.currSchool["School ID"]) && (s["Scenario"] === this.state.scenario)
           )
           
+          // generate opacity based on student counts
           const studentPopulationBlocks = Object.fromEntries(countdata.map(d => 
             [d["Census Block Group FIPS"], this.opacityScale(d["Student Count"])]
           ))
 
-          this.map
-            .setPaintProperty(
-              'census-blocks-data', 
-              'fill-opacity', [
-                'case',
-                ['has',
-                  ['get', 'GEOID10'],
-                  ['literal', studentPopulationBlocks]
-                ],
-                ['get',
-                  ['get', 'GEOID10'],
-                  ['literal', studentPopulationBlocks]
-                ],
-                0.1
-              ]
-              
-            )
+          // find student count for each census block and update opacity accordingly
+          this.map.setPaintProperty(
+            'census-blocks-data', 
+            'fill-opacity', [
+              'case',
+              ['has',
+                ['get', 'GEOID10'],
+                ['literal', studentPopulationBlocks]
+              ],
+              ['get',
+                ['get', 'GEOID10'],
+                ['literal', studentPopulationBlocks]
+              ],
+              0.1 // this line sets a backup opacity of 0.1 if there are new students coming from this block
+            ]
+          )
         }
-    }
-  }
+    } // end update active school
+  } // end componentDidUpdate
 
   render() {
     return (
