@@ -54,6 +54,7 @@ class Map extends React.PureComponent {
     this.sidebarClick = this.sidebarClick.bind(this);
     this.updateFilter = this.updateFilter.bind(this);
     this.changeScenario = this.changeScenario.bind(this);
+    this.resetActiveSchool = this.resetActiveSchool.bind(this);
     this.mapContainer = React.createRef();
     this.map = '';
 
@@ -82,6 +83,26 @@ class Map extends React.PureComponent {
         scenario: "Today"
       })
     }
+  }
+
+  resetActiveSchool() {
+    // reset opacity levels of census blocks to defaults
+    this.map.setPaintProperty(
+      'census-blocks-data',
+      'fill-opacity',
+      0.6
+    )
+
+    // set active school to inactive
+    this.map.setFeatureState(
+      { source: 'school-locations-data', id: this.state.currSchool["School ID"] },
+      { activeschool: false }
+    );
+
+    // update the app's state
+    this.setState({
+      currSchool: null
+    })
   }
 
   componentDidMount() {
@@ -325,7 +346,7 @@ class Map extends React.PureComponent {
               ? 'Current school: ' + this.state.currSchool["Name"]
               : ''
             }
-            <button>
+            <button onClick={() => this.resetActiveSchool()}>
               x
             </button>
           </div>
