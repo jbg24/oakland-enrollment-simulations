@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from 'd3-scale';
 import InfoCard from "./components/infoCard.jsx"
+import { addScenarioLayer } from "./helpers/addScenarioLayer.js"
 import { processLocations } from "./helpers/processLocations.js"
 import { join } from "./helpers/join.js"
 
@@ -138,44 +139,24 @@ class Map extends React.PureComponent {
       //   }
       // });
 
-      // "Today" scenario boundaries
-      map.addSource('bounds-today', {
-        type: 'vector',
-        url: 'mapbox://tylermachado.ctywuxms'
-      });
-      map.addLayer({
-        'id': 'bounds-today-data',
-        'type': 'line',
-        'source': 'bounds-today',
-        'source-layer': 'OUSD_ESAA_1920-4yapi9',
-        'layout': {
-          'visibility': 'visible'
-        },
-        'paint': {
-          'line-color': '#555555',
-          'line-width': 2
-        }
-      });
+      // add layers for the scenarios
+      addScenarioLayer(map, {
+        name: 'today',
+        shapefileURL: 'mapbox://tylermachado.ctywuxms',
+        shapefileName: 'OUSD_ESAA_1920-4yapi9'
+      })
+      addScenarioLayer(map, {
+        name: 'zone',
+        shapefileURL: 'mapbox://tylermachado.3a0n7mkn',
+        shapefileName: 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7'
+      })
 
-      // "Zone" scenario boundaries
-      map.addSource('bounds-zone', {
-        type: 'vector',
-        url: 'mapbox://tylermachado.3a0n7mkn'
-      });
-
-      map.addLayer({
-        'id': 'bounds-zone-data',
-        'type': 'line',
-        'source': 'bounds-zone',
-        'source-layer': 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7',
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#555555',
-          'line-width': 3
-        }
-      });
+      // extra function to "turn on" the today scenario as the initially visible state
+      map.setLayoutProperty(
+        'bounds-today-data',
+        'visibility',
+        'visible'
+      )
     
       // Schools 
       map.addSource('school-locations-data', {
@@ -244,32 +225,18 @@ class Map extends React.PureComponent {
     const { currSchool, scenario } = this.state;
 
     // redraw scenario boundary lines
-    if (scenario !== prevProps.scenario) {
-      if (scenario === "Today") {
-        this.map.setLayoutProperty(
-          'bounds-today-data',
-          'visibility',
-          'visible'
-        )
+    if (scenario !== prevState.scenario) {
+      this.map.setLayoutProperty(
+        'bounds-' + prevState.scenario.toLowerCase() + '-data',
+        'visibility',
+        'none'
+      )
 
-        this.map.setLayoutProperty(
-          'bounds-zone-data',
-          'visibility',
-          'none'
-        )
-      } else {
-        this.map.setLayoutProperty(
-          'bounds-zone-data',
-          'visibility',
-          'visible'
-        )
-
-        this.map.setLayoutProperty(
-          'bounds-today-data',
-          'visibility',
-          'none'
-        )
-      }
+      this.map.setLayoutProperty(
+        'bounds-' + scenario.toLowerCase() + '-data',
+        'visibility',
+        'visible'
+      )
     } // end redraw scenario boundary lines
 
 
@@ -348,7 +315,7 @@ class Map extends React.PureComponent {
           </div>
         </section> 
         <section className="map">
-          <div class={
+          <div className={
             this.state.currSchool !== null
               ? 'active-overlay activated'
               : 'active-overlay'
