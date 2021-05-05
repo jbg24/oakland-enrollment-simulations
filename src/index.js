@@ -320,7 +320,7 @@ class Map extends React.PureComponent {
           <input type="text" placeholder="Filter schools" value={this.state.filter} onChange={this.updateFilter}  />
           <div className="results">
             {joinedData
-              .filter(d => this.state.filter === '' || d["Name"].toLowerCase().includes(this.state.filter))
+              .filter(d => this.state.filter === '' || d["Name"].toLowerCase().includes(this.state.filter.toLowerCase()))
               .filter(d => (d["Scenario"] === this.state.scenario))
               .sort((a, b) => (a["Name"] > b["Name"]) ? 1 : -1)
               .map((d) =>
