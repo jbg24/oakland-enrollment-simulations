@@ -16,7 +16,7 @@ import * as studentCounts from "./data/student-counts.json"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 mapboxgl.workerClass = MapboxWorker;
-mapboxgl.accessToken = 'pk.eyJ1IjoidHlsZXJtYWNoYWRvIiwiYSI6ImNpbXY1YmMxMTAybTh1cGtrYmY3bjFiNHMifQ.e7Jn45kHrT5m2SbpSCZq5Q';
+mapboxgl.accessToken = 'pk.eyJ1IjoiamJnb3JtbGV5IiwiYSI6ImNrb2o5Y3E0ZDFhbHgycG85MGlleXZnY2MifQ.kVBtVldU0b_02-8ZHXn4yw';
 
 // merge school location data with scores data
 const joinedData = join(locations.default, data.default, "ID", "School ID", function (table2, table1) {
@@ -121,13 +121,13 @@ class Map extends React.PureComponent {
       // colored-in census blocks
       map.addSource('census-blocks', {
         type: 'vector',
-        url: 'mapbox://tylermachado.3unavpo1'
+        url: 'mapbox://jbgormley.0dpknf2p'
       });
       map.addLayer({
         'id': 'census-blocks-data',
         'type': 'fill',
         'source': 'census-blocks',
-        'source-layer': 'OUSD_CBG_With_Wealth_Data-2evk4o',
+        'source-layer': 'OUSD_CBG_Wealth_Cluster-47fmtv',
         'paint': {
           'fill-color': [
             'interpolate-hcl',
@@ -163,13 +163,13 @@ class Map extends React.PureComponent {
       // add layers for the scenarios
       addScenarioLayer(map, {
         name: 'today',
-        shapefileURL: 'mapbox://tylermachado.ctywuxms',
-        shapefileName: 'OUSD_ESAA_1920-4yapi9'
+        shapefileURL: 'mapbox://jbgormley.9aldq84l',
+        shapefileName: 'OUSD_ESAA_1920-2e5lpw'
       })
       addScenarioLayer(map, {
         name: 'zone',
-        shapefileURL: 'mapbox://tylermachado.3a0n7mkn',
-        shapefileName: 'Dissolved_OUSD_ES_Multi_Schoo-a87qn7'
+        shapefileURL: 'mapbox://jbgormley.bwr11lpb',
+        shapefileName: 'Dissolved_OUSD_ES_Zones-75nvu9'
       })
 
       // extra function to "turn on" the today scenario as the initially visible state
