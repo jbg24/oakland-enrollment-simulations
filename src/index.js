@@ -6,11 +6,22 @@ import InfoCard from "./components/infoCard.jsx"
 import { addScenarioLayer } from "./helpers/addScenarioLayer.js"
 import { processLocations } from "./helpers/processLocations.js"
 import { join } from "./helpers/join.js"
+//import {readGoogleSpreadsheetData} from "./helpers/readGoogleSpreadsheetData.js"
+//const { GoogleSpreadsheet } = require('google-spreadsheet')
 
 // loading data
 import * as data from "./data/scores.json"
 import * as locations from "./data/locations.json"
 import * as studentCounts from "./data/student-counts.json"
+
+// loading data from Google Spreadsheet
+//const creds = require('./config/across-lines-oakland-73eee50d36a4.json')
+//const doc = new GoogleSpreadsheet('1Tk8x2McRveR2ya5AJEMG-gTgOUJjS_TQu8Fx150YVGc')
+
+//const data = readGoogleSpreadsheetData(1227838155,doc,creds)
+//const locations = await readGoogleSpreadsheetData(0,doc,creds);
+//console.log(locations)
+//const studentCounts = readGoogleSpreadsheetData(675195457,doc,creds)
 
 // loading Mapbox items
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
@@ -33,9 +44,10 @@ const joinedData = join(locations.default, data.default, "ID", "School ID", func
     "Cluster 1 Change on Today": table2["Cluster 1 Change on Today"],
     "Cluster 2 Change on Today": table2["Cluster 2 Change on Today"],
     "Cluster 3 Change on Today": table2["Cluster 3 Change on Today"],
+    "Enrollment": table2["Enrollment"],
     "Racial Diversity Score": table2["Racial Diversity Score"],
-    "Racial-Poverty Gap Contribution": table2["Racial-Poverty Gap Contribution"],
-    "Racial-Travel Gap Contribution": table2["Racial-Travel Gap Contribution"]
+    "English Learner Percentage": table2["English Learner Percentage"],
+    "Avg. Travel Distance": table2["Avg. Travel Distance"]
   };
 });
 
@@ -73,16 +85,10 @@ class Map extends React.PureComponent {
     });
   }
 
-  changeScenario() {
-    if (this.state.scenario === "Today") {
+  changeScenario(scenario_name) {
       this.setState({ 
-        scenario: "Zone"
+        scenario: scenario_name
       });
-    } else {
-      this.setState({ 
-        scenario: "Today"
-      })
-    }
   }
 
   resetActiveSchool() {
@@ -134,9 +140,9 @@ class Map extends React.PureComponent {
             ['linear'],
             ['get', 'Cluster'],
             0,
-            ['to-color', '#12a6a3'],
+            ['to-color', '#2025e5'],
             3,
-            ['to-color', '#d11515']
+            ['to-color', '#88e520']
           ],
           'fill-opacity': 0.6,
           'fill-outline-color': '#555555'
@@ -170,6 +176,16 @@ class Map extends React.PureComponent {
         name: 'zone',
         shapefileURL: 'mapbox://jbgormley.bwr11lpb',
         shapefileName: 'Dissolved_OUSD_ES_Zones-75nvu9'
+      })
+      addScenarioLayer(map, {
+        name: 'neighborhood',
+        shapefileURL: 'mapbox://jbgormley.2poubl11',
+        shapefileName: 'Dissolve_OUSD_Outer_Boundary-bo8uxq'
+      })
+      addScenarioLayer(map, {
+        name: 'openenr',
+        shapefileURL: 'mapbox://jbgormley.2poubl11',
+        shapefileName: 'Dissolve_OUSD_Outer_Boundary-bo8uxq'
       })
 
       // extra function to "turn on" the today scenario as the initially visible state
@@ -212,6 +228,19 @@ class Map extends React.PureComponent {
           ]
         }
       });
+      map.addLayer({
+        'id': 'school-names',
+        'type': 'symbol',
+        'source': 'school-locations-data',
+        'layout': {
+          'text-field': ['get', 'title'],
+          'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+          'text-radial-offset': 0.5,
+          'text-justify': 'auto',
+          'text-size': 8
+          //'text-justify': 'auto'
+        }
+      });
 
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
@@ -221,11 +250,12 @@ class Map extends React.PureComponent {
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML("<h4>" + properties.GEOID10 + "</h4><ul>"+
-          "<li>Education Score: " + properties.Education_.toFixed(2) + 
+          .setHTML("<h4>Census Block Grp.: " + properties.GEOID10 + "</h4><ul>"+
+          "<li>Wealth Cluster: " + properties.Cluster.toFixed(0) + 
           "<li>Home Ownership: " + properties.Home_Owner.toFixed(2) +
           "<li>Multi-Parent Households: " + properties.Multi_Pare.toFixed(2) +
           "<li>Household Income: " + properties.Household_.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) +
+          "<li>Education Score: " + properties.Education_.toFixed(2) + 
           "</ul>")
           .addTo(map);
       }); // onClick popup
@@ -312,9 +342,13 @@ class Map extends React.PureComponent {
           <h1>ACROSS LINES</h1>
         </section> 
         <section className="control">
-            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Today") ? "active control-button" : "control-button"}>TODAY</span>
+            <span  onClick={() => this.changeScenario("Today")} className={(this.state.scenario === "Today") ? "active control-button" : "control-button"}>TODAY</span>
             |
-            <span  onClick={() => this.changeScenario()} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
+            <span  onClick={() => this.changeScenario("Neighborhood")} className={(this.state.scenario === "Neighborhood") ? "active control-button" : "control-button"}>NEIGHBORHOOD</span>
+            |
+            <span  onClick={() => this.changeScenario("Zone")} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
+            |
+            <span  onClick={() => this.changeScenario("OpenEnr")} className={(this.state.scenario === "OpenEnr") ? "active control-button" : "control-button"}>OPENENROLL-PLUS</span>
         </section>
         <section className="info">
           <input type="text" placeholder="Filter schools" value={this.state.filter} onChange={this.updateFilter}  />

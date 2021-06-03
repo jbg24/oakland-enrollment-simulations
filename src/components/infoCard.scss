@@ -13,6 +13,7 @@
         "school-name school-name school-name school-name school-score"
         ". sq-1 sq-2 sq-3 ."
         ". ch-1 ch-2 ch-3 ."
+        "gap-c gap-c gap-c gap-c gap-c"
         "gap-p gap-p gap-p gap-p gap-p"
         "gap-t gap-t gap-t gap-t gap-t";
 
@@ -30,6 +31,7 @@
         font-weight: 900; 
         text-align:right;
     }
+    .gap-c { grid-area: gap-c; }
     .gap-p { grid-area: gap-p; }
     .gap-t { grid-area: gap-t; }
     .sq-1 { grid-area: sq-1; }
