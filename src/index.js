@@ -339,7 +339,7 @@ class Map extends React.PureComponent {
     return (
       <div className="grid-container">
         <section className="header">
-          <h1>ACROSS LINES</h1>
+          <h1>OUSD ELEM.</h1>
         </section> 
         <section className="control">
             <span  onClick={() => this.changeScenario("Today")} className={(this.state.scenario === "Today") ? "active control-button" : "control-button"}>TODAY</span>
@@ -351,6 +351,7 @@ class Map extends React.PureComponent {
             <span  onClick={() => this.changeScenario("OpenEnr")} className={(this.state.scenario === "OpenEnr") ? "active control-button" : "control-button"}>OPENENROLL-PLUS</span>
         </section>
         <section className="info">
+          <p style={{"fontSize" : "10px"}}><center>Copyright &copy; Across Lines, LLC 2021</center></p>
           <input type="text" placeholder="Filter schools" value={this.state.filter} onChange={this.updateFilter}  />
           <div className="results">
             {joinedData
