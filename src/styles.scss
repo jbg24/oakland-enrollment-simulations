@@ -19,6 +19,8 @@ body {
       "control"
       "map"
       "info"
+      "blank"
+      "footer"
       ;
 
   @media screen and (min-width: $lg-screen) {
@@ -28,7 +30,8 @@ body {
     gap: 0px 0px;
     grid-template-areas:
       "header control"
-      "info map";
+      "info map"
+      "blank footer";
   }
   
 }
@@ -62,6 +65,16 @@ body {
   // right: 0;
   // left: 0;
   // bottom: 0;
+}
+
+.blank { 
+  grid-area: blank; 
+  background-color: #b0b0b0;
+}
+
+.footer { 
+  grid-area: footer; 
+  background-color: #b0b0b0;
 }
 
 .active-overlay {
@@ -111,6 +124,18 @@ body {
   
   h1 {
     font-size:2rem;
+  }
+}
+
+.footer {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:0 25%;
+  text-align:center;
+  
+  h1 {
+    font-size:0.75rem;
   }
 }
 

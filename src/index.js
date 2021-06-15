@@ -215,7 +215,7 @@ class Map extends React.PureComponent {
           'circle-color': [
             'case',
             ['boolean', ['feature-state', 'activeschool'], false],
-            "#ffffff",
+            "#ff0000",
             "#cccccc"
           ],
           'circle-stroke-color': 'black',
@@ -349,9 +349,10 @@ class Map extends React.PureComponent {
             <span  onClick={() => this.changeScenario("Zone")} className={(this.state.scenario === "Zone") ? "active control-button" : "control-button"}>ZONE</span>
             |
             <span  onClick={() => this.changeScenario("OpenEnr")} className={(this.state.scenario === "OpenEnr") ? "active control-button" : "control-button"}>OPENENROLL-PLUS</span>
+            |
+            <span  onClick={() => window.open('https://docs.google.com/document/d/1RB3lUDtSABEa7fD51Nwurys5ZoiUL49DrNISbLeEslU','_blank')} className={(this.state.scenario === "Other") ? "active control-button" : "control-button"}>Methodology&Results</span>
         </section>
         <section className="info">
-          <p style={{"fontSize" : "10px"}}><center>Copyright &copy; Across Lines, LLC 2021</center></p>
           <input type="text" placeholder="Filter schools" value={this.state.filter} onChange={this.updateFilter}  />
           <div className="results">
             {joinedData
@@ -388,9 +389,13 @@ class Map extends React.PureComponent {
             </button>
           </div>
           <div ref={this.mapContainer} className="map-container" />
-        </section>;
-        
-      </div>
+        </section>
+        <section className="blank">
+        </section> 
+        <section className="footer">
+          <h1>Copyright &copy; Across Lines, LLC 2021</h1>
+        </section> 
+       </div>
     );
   }
 }
