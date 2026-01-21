@@ -1,4 +1,4 @@
-A demo of an interactive map on zone scenarios for Across Lines.
+A demo of an interactive map on enrollment scenarios for elementary schools in Oakland Unified Public Schools.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
